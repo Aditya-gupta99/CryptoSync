@@ -1,7 +1,7 @@
 package com.sparklead.cryptosync.serviceImp
 
 import android.util.Log
-import com.sparklead.cryptosync.dto.CryptoItem
+import com.sparklead.cryptosync.dto.CryptoLiveDto
 import com.sparklead.cryptosync.dto.CryptoListDto
 import com.sparklead.cryptosync.remote.HttpRoutes
 import com.sparklead.cryptosync.service.CryptoService
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class CryptoServiceImp @Inject constructor(private val client: HttpClient) : CryptoService {
 
-    override suspend fun getAllCurrencies(): CryptoItem {
+    override suspend fun getAllCurrencies(): CryptoLiveDto {
         return try {
             client.get {
                 url(HttpRoutes.LiveCurrency)

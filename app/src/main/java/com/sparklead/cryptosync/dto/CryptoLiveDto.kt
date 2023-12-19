@@ -3,7 +3,7 @@ package com.sparklead.cryptosync.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CryptoItem(
+data class CryptoLiveDto(
 
     val privacy: String,
 
