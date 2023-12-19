@@ -1,4 +1,7 @@
 package com.sparklead.cryptosync.app
 
-class CryptoSync {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class CryptoSync : Application()
