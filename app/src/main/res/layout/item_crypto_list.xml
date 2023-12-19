@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_anime"
+        android:id="@+id/cv_crypto"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -41,6 +41,7 @@
                     tool:text="Crypto Name" />
 
                 <TextView
+                    android:id="@+id/tv_exchange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tool:text="Exchange rate" />
