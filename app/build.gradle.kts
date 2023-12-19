@@ -73,4 +73,7 @@ dependencies {
     // Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.47")
+
+    // swipe refresh layout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
