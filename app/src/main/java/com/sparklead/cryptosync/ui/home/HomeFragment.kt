@@ -1,6 +1,7 @@
 package com.sparklead.cryptosync.ui.home
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,6 +63,7 @@ class HomeFragment : Fragment(), OnRefreshListener {
     }
 
     private fun showSuccess(cryptoList: List<Crypto>) {
+        autoRefresh()
         binding.swipeContainer.isRefreshing = false
         Toast.makeText(requireContext(), "Refresh", Toast.LENGTH_SHORT).show()
         cryptoListAdapter.differ.submitList(cryptoList)
@@ -86,5 +88,31 @@ class HomeFragment : Fragment(), OnRefreshListener {
 
     override fun onRefresh() {
         viewModel.getCryptoList()
+    }
+
+    private fun autoRefresh() {
+        val timer = object : CountDownTimer(180000, 60000) {
+
+            override fun onTick(p0: Long) {
+                when (p0) {
+                    in 120000..180000 -> {
+                        binding.tvUpdateStatus.text = "Updated Now"
+                    }
+
+                    in 60000..120000 -> {
+                        binding.tvUpdateStatus.text = "Updated 1 min ago"
+                    }
+
+                    else -> {
+                        binding.tvUpdateStatus.text = "Updated 2 min ago"
+                    }
+                }
+            }
+
+            override fun onFinish() {
+                viewModel.getCryptoList()
+            }
+        }
+        timer.start()
     }
 }
