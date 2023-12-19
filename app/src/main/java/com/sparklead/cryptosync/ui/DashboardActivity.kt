@@ -1,7 +1,8 @@
-package com.sparklead.cryptosync
+package com.sparklead.cryptosync.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.sparklead.cryptosync.R
 
 class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
