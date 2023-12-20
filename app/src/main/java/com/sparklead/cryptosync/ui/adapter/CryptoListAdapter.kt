@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sparklead.cryptosync.databinding.ItemCryptoListBinding
 import com.sparklead.cryptosync.model.Crypto
 import com.sparklead.cryptosync.utils.GlideLoader
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class CryptoListAdapter : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolder>() {
 
@@ -36,7 +38,9 @@ class CryptoListAdapter : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolde
         with(holder){
             with(differ.currentList[position]){
                 binding.tvCryptoName.text = this.fullName
-                binding.tvExchange.text = this.exchange.toString()
+                val df = DecimalFormat("#.######")
+                df.roundingMode = RoundingMode.DOWN
+                binding.tvExchange.text = df.format(this.exchange)
                 GlideLoader(holder.itemView.context).loadAnimePicture(this.icon,binding.ivCryptoIcon)
             }
         }
