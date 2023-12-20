@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#1ED760</color>
+
+    <color name="colorSnackBarError">#ED9B95</color>
+    <color name="colorSnackBarSuccess">#CAECA3</color>
 </resources>

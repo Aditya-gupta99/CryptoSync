@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sparklead.cryptosync.databinding.ItemCryptoListBinding
 import com.sparklead.cryptosync.model.Crypto
+import com.sparklead.cryptosync.utils.GlideLoader
 
 class CryptoListAdapter : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolder>() {
 
@@ -15,7 +16,7 @@ class CryptoListAdapter : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolde
     private val differCallback = object : DiffUtil.ItemCallback<Crypto>() {
 
         override fun areItemsTheSame(oldItem: Crypto, newItem: Crypto): Boolean {
-            return oldItem == newItem
+            return oldItem.exchange == newItem.exchange
         }
 
         override fun areContentsTheSame(oldItem: Crypto, newItem: Crypto): Boolean {
@@ -36,6 +37,7 @@ class CryptoListAdapter : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolde
             with(differ.currentList[position]){
                 binding.tvCryptoName.text = this.fullName
                 binding.tvExchange.text = this.exchange.toString()
+                GlideLoader(holder.itemView.context).loadAnimePicture(this.icon,binding.ivCryptoIcon)
             }
         }
     }

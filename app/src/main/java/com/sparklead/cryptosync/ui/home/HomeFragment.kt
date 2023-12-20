@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,11 +13,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.sparklead.cryptosync.databinding.FragmentHomeBinding
 import com.sparklead.cryptosync.model.Crypto
 import com.sparklead.cryptosync.ui.adapter.CryptoListAdapter
+import com.sparklead.cryptosync.ui.base.BaseFragment
+import com.sparklead.cryptosync.utils.Network
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), OnRefreshListener {
+class HomeFragment : BaseFragment(), OnRefreshListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +35,14 @@ class HomeFragment : Fragment(), OnRefreshListener {
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpAdapter()
         binding.swipeContainer.setOnRefreshListener(this)
-        viewModel.getCryptoList()
+        showLoadingDialog()
+        if (Network.isOnline(requireContext())) {
+            viewModel.getCryptoList()
+        } else {
+            hideLoading()
+            showErrorSnackBar("You are offline", true)
+            binding.tvUpdateStatus.text = "offline"
+        }
         return binding.root
     }
 
@@ -45,16 +53,17 @@ class HomeFragment : Fragment(), OnRefreshListener {
             viewModel.homeUiState.collect {
                 when (it) {
                     is HomeUiState.Empty -> {
-
                     }
 
                     is HomeUiState.Error -> {
+                        hideLoading()
                         showError(it.message)
                     }
 
                     is HomeUiState.Loading -> {}
 
                     is HomeUiState.Success -> {
+                        hideLoading()
                         showSuccess(it.cryptoList)
                     }
                 }
@@ -65,7 +74,7 @@ class HomeFragment : Fragment(), OnRefreshListener {
     private fun showSuccess(cryptoList: List<Crypto>) {
         autoRefresh()
         binding.swipeContainer.isRefreshing = false
-        Toast.makeText(requireContext(), "Refresh", Toast.LENGTH_SHORT).show()
+        binding.ltRefresh.playAnimation()
         cryptoListAdapter.differ.submitList(cryptoList)
     }
 
@@ -87,7 +96,13 @@ class HomeFragment : Fragment(), OnRefreshListener {
     }
 
     override fun onRefresh() {
-        viewModel.getCryptoList()
+        if (Network.isOnline(requireContext())) {
+            viewModel.getCryptoList()
+        } else {
+            showErrorSnackBar("You are offline", true)
+            binding.tvUpdateStatus.text = "offline"
+            binding.swipeContainer.isRefreshing = false
+        }
     }
 
     private fun autoRefresh() {
@@ -96,21 +111,26 @@ class HomeFragment : Fragment(), OnRefreshListener {
             override fun onTick(p0: Long) {
                 when (p0) {
                     in 120000..180000 -> {
-                        binding.tvUpdateStatus.text = "Updated Now"
+                        binding.tvUpdateStatus.text = "Now"
                     }
 
                     in 60000..120000 -> {
-                        binding.tvUpdateStatus.text = "Updated 1 min ago"
+                        binding.tvUpdateStatus.text = "1 min ago"
                     }
 
                     else -> {
-                        binding.tvUpdateStatus.text = "Updated 2 min ago"
+                        binding.tvUpdateStatus.text = "2 min ago"
                     }
                 }
             }
 
             override fun onFinish() {
-                viewModel.getCryptoList()
+                if (Network.isOnline(requireContext())) {
+                    viewModel.getCryptoList()
+                } else {
+                    showErrorSnackBar("You are offline", true)
+                    binding.tvUpdateStatus.text = "offline"
+                }
             }
         }
         timer.start()

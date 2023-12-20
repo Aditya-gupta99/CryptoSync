@@ -1,4 +1,4 @@
-package com.sparklead.cryptosync.ui
+package com.sparklead.cryptosync.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
