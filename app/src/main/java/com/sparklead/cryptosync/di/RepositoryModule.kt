@@ -1,8 +1,8 @@
 package com.sparklead.cryptosync.di
 
-import com.sparklead.cryptosync.service.CryptoService
-import com.sparklead.cryptosync.ui.home.CryptoRepository
-import com.sparklead.cryptosync.ui.home.CryptoRepositoryImp
+import com.sparklead.cryptosync.data.service.CryptoService
+import com.sparklead.cryptosync.domain.repository.CryptoRepository
+import com.sparklead.cryptosync.data.repositoryImp.CryptoRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

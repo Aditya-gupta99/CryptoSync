@@ -1,7 +1,7 @@
 package com.sparklead.cryptosync.di
 
-import com.sparklead.cryptosync.service.CryptoService
-import com.sparklead.cryptosync.serviceImp.CryptoServiceImp
+import com.sparklead.cryptosync.data.service.CryptoService
+import com.sparklead.cryptosync.data.serviceImp.CryptoServiceImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
