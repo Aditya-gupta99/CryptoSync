@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment(), OnRefreshListener {
             viewModel.getCryptoList()
         } else {
             hideLoading()
-            showErrorSnackBar("You are offline", true)
+            showSnackbar()
             binding.tvUpdateStatus.text = "offline"
         }
         return binding.root
@@ -99,7 +99,7 @@ class HomeFragment : BaseFragment(), OnRefreshListener {
         if (Network.isOnline(requireContext())) {
             viewModel.getCryptoList()
         } else {
-            showErrorSnackBar("You are offline", true)
+            showSnackbar()
             binding.tvUpdateStatus.text = "offline"
             binding.swipeContainer.isRefreshing = false
         }
@@ -128,11 +128,21 @@ class HomeFragment : BaseFragment(), OnRefreshListener {
                 if (Network.isOnline(requireContext())) {
                     viewModel.getCryptoList()
                 } else {
-                    showErrorSnackBar("You are offline", true)
+                    showSnackbar()
                     binding.tvUpdateStatus.text = "offline"
                 }
             }
         }
         timer.start()
+    }
+
+    private fun showSnackbar() {
+        showErrorSnackBar("You are offline", true){
+            if (Network.isOnline(requireContext())) {
+                viewModel.getCryptoList()
+            } else {
+                showSnackbar()
+            }
+        }
     }
 }

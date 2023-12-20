@@ -29,10 +29,14 @@ open class BaseFragment : Fragment() {
         loadingDialog.let { if (it.isShowing)it.cancel() }
     }
 
-    fun showErrorSnackBar(message: String, errorMessage: Boolean){
-        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG)
+    fun showErrorSnackBar(message: String, errorMessage: Boolean,onClick: () ->Unit){
+        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_INDEFINITE)
 
         val snackBarView = snackBar.view
+
+        snackBar.setAction("Retry") {
+            onClick()
+        }
 
         if(errorMessage){
             snackBarView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorSnackBarError))
